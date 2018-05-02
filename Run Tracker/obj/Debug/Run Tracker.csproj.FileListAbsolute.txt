@@ -1,0 +1,17 @@
+c:\users\user\source\repos\Run Tracker\Run Tracker\bin\Debug\Run Tracker.exe.config
+c:\users\user\source\repos\Run Tracker\Run Tracker\bin\Debug\Run Tracker.exe
+c:\users\user\source\repos\Run Tracker\Run Tracker\bin\Debug\Run Tracker.pdb
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\MainWindow.g.cs
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\App.g.cs
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\Run Tracker_MarkupCompile.cache
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\MainWindow.baml
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\Run Tracker.g.resources
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\Run_Tracker.Properties.Resources.resources
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\Run Tracker.csproj.GenerateResource.Cache
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\Run Tracker.csproj.CoreCompileInputs.cache
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\Run Tracker.exe
+c:\users\user\source\repos\Run Tracker\Run Tracker\obj\Debug\Run Tracker.pdb
+C:\Users\User\source\repos\Run Tracker\Run Tracker\obj\Debug\New.g.cs
+C:\Users\User\source\repos\Run Tracker\Run Tracker\obj\Debug\Run Tracker_MarkupCompile.lref
+C:\Users\User\source\repos\Run Tracker\Run Tracker\obj\Debug\New.baml
+C:\Users\User\source\repos\Run Tracker\Run Tracker\obj\Debug\Run Tracker.csprojResolveAssemblyReference.cache
