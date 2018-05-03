@@ -8,10 +8,11 @@ namespace Run_Tracker
 {
     class User
     {
-        //Fields
+        #region Fields
         private string _username;
+        #endregion Fields
 
-        //Getters and Setters
+        #region Getters and Setters
         public string Username
         {
             get
@@ -23,8 +24,9 @@ namespace Run_Tracker
                 this._username = value;
             }
         }
+        #endregion Getters and Setters
 
-        //Constructors
+        #region Constructors
         public User()
         {
 
@@ -33,6 +35,7 @@ namespace Run_Tracker
         public User(string name)
         {
             this.Username = name;
-        }               
+        }
+        #endregion Constructors
     }
 }

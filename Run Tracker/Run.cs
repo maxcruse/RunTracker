@@ -8,14 +8,15 @@ namespace Run_Tracker
 {
     public abstract class Run
     {
-        //Fields
+        #region Fields
         private int _distance;
         private TimeSpan _pace;
         private string _date;
         private TimeSpan _time;
         private string _type;
+        #endregion Fields
 
-        //Getters and Setters
+        #region Getters and Setters
         public int Distance
         {
             get
@@ -71,5 +72,6 @@ namespace Run_Tracker
                 this._type = value;
             }
         }
+        #endregion Getters and Setters
     }
 }

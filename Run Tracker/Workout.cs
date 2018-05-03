@@ -8,15 +8,16 @@ namespace Run_Tracker
 {
     public class Workout : Run
     {
-        //Fields
+        #region Fields
         private int _numOfIntervals;
         private TimeSpan _paceOfIntervals;
         private int _distOfIntervals;
         private int _jogDist;
         private TimeSpan _jogPace;
         private TimeSpan _jogTime;
+        #endregion Fields
 
-        //Getters and Setters
+        #region Getters and Setters
         public int NumOfIntervals
         {
             get
@@ -83,14 +84,16 @@ namespace Run_Tracker
                 this._jogTime = value;
             }
         }
+        #endregion Getters and Setters
 
-        //Constructors
+        #region Constructors
         public Workout()
         {
             
         }
-        
-        //Methods
+        #endregion Constructors
+
+        #region Methods
         public void CalculateWithRecovery()
         {
             Distance = (this._distOfIntervals * this._numOfIntervals) + (this._numOfIntervals * this._jogDist);
@@ -102,5 +105,6 @@ namespace Run_Tracker
             Distance = this._distOfIntervals * this._numOfIntervals;
             Pace = this._paceOfIntervals;
         }
+        #endregion Methods
     }
 }

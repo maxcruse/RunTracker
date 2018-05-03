@@ -8,10 +8,11 @@ namespace Run_Tracker
 {
     public class MileageRun : Run
     {
-        //Constructor
+        #region Constructors
         public MileageRun()
         {
 
         }
+        #endregion Constructors
     }
 }
