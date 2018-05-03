@@ -24,6 +24,9 @@ namespace Run_Tracker
     {
         public List<Run> items = new List<Run>();
 
+        SqlConnection cs = new SqlConnection("Server=R6507002;Database=RunTracker;Trusted_Connection=True;");
+        SqlDataAdapter da = new SqlDataAdapter();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -86,16 +89,23 @@ namespace Run_Tracker
             //TimeSpan time = new TimeSpan(Convert.ToInt32(HourTB.Text), Convert.ToInt32(MinTB.Text), Convert.ToInt32(SecTB.Text));
             //TimeSpan pacetime = new TimeSpan(0, Convert.ToInt32(PaceTB.Text), Convert.ToInt32(PaceMinTB.Text));
 
-            SqlConnection cs = new SqlConnection("Data Source=R6507002; Initial Catalog=RunTracker; Integrated Security=TRUE");
-            SqlDataAdapter da = new SqlDataAdapter();
-            //da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES(@distance)", cs);
-            //da.InsertCommand.Parameters.Add("@distance", SqlDbType.Int).Value = Convert.ToInt32(DistanceTB.Text);
-            //da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES ('" + DistanceTB.Text + "','" + time + "','" + PaceTB.Text + "','" + Date.Text + "' )", cs);
-            da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES (@distance, @totaltime, @pace, @dateofrun)", cs);
+            //SqlConnection cs = new SqlConnection("Data Source=R6507002\LOCALDB#E4BD5D78; Initial Catalog=RunTracker; Integrated Security=TRUE");
+            
+            //da.InsertCommand = new SqlCommand("INSERT INTO practice VALUES(@distance)", cs);
+            //da.InsertCommand.Parameters.Add("@distance", SqlDbType.VarChar).Value = DistanceTB.Text;
+            //da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES ('" + DistanceTB.Text + "','" + mileage.Time + "','" + PaceTB.Text + "','" + Date.Text + "' )", cs);
+            /*da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES (@distance, @totaltime, @pace, @dateofrun, @typeofrun)", cs);
             da.InsertCommand.Parameters.Add("@distance", SqlDbType.Int).Value = Convert.ToInt32(DistanceTB.Text);
             da.InsertCommand.Parameters.Add("@totaltime", SqlDbType.Time).Value = new TimeSpan(Convert.ToInt32(HourTB.Text), Convert.ToInt32(MinTB.Text), Convert.ToInt32(SecTB.Text));
             da.InsertCommand.Parameters.Add("@pace", SqlDbType.Time).Value = new TimeSpan(0, Convert.ToInt32(PaceTB.Text), Convert.ToInt32(PaceMinTB.Text));
             da.InsertCommand.Parameters.Add("@dateofrun", SqlDbType.Date).Value = Date.Text;
+            da.InsertCommand.Parameters.Add("@typeofrun", SqlDbType.VarChar).Value = "Mileage";*/
+            da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES (@distance, @totaltime, @pace, @dateofrun, @typeofrun)", cs);
+            da.InsertCommand.Parameters.Add("@distance", SqlDbType.Int).Value = mileage.Distance;
+            da.InsertCommand.Parameters.Add("@totaltime", SqlDbType.Time).Value = mileage.Time;
+            da.InsertCommand.Parameters.Add("@pace", SqlDbType.Time).Value = mileage.Pace;
+            da.InsertCommand.Parameters.Add("@dateofrun", SqlDbType.Date).Value = mileage.Date;
+            da.InsertCommand.Parameters.Add("@typeofrun", SqlDbType.VarChar).Value = mileage.Type;
             cs.Open();
             da.InsertCommand.ExecuteNonQuery();
             cs.Close();
@@ -137,7 +147,6 @@ namespace Run_Tracker
             MessageBox.Show("New Run added!");
         }
 
-
         private void WorkoutRB_Checked(object sender, RoutedEventArgs e)
         {
             DistanceTB.Visibility = Visibility.Hidden;
@@ -149,8 +158,18 @@ namespace Run_Tracker
             PaceText.Visibility = Visibility.Hidden;
             PaceTB.Visibility = Visibility.Hidden;
             PaceMinTB.Visibility = Visibility.Hidden;
-            Date.Visibility = Visibility.Hidden;
             AddMileageRun.Visibility = Visibility.Hidden;
+
+            NumIntText.Visibility = Visibility.Visible;
+            NumIntTB.Visibility = Visibility.Visible;
+            DistIntText.Visibility = Visibility.Visible;
+            DistIntTB.Visibility = Visibility.Visible;
+            PaceIntText.Visibility = Visibility.Visible;
+            PaceIntMinTB.Visibility = Visibility.Visible;
+            PaceIntSecTB.Visibility = Visibility.Visible;
+            JogCB.Visibility = Visibility.Visible;
+            Date.Visibility = Visibility.Visible;
+            AddWorkout.Visibility = Visibility.Visible;
         }
 
         private void MileageRB_Checked(object sender, RoutedEventArgs e)
@@ -166,6 +185,51 @@ namespace Run_Tracker
             PaceMinTB.Visibility = Visibility.Visible;
             Date.Visibility = Visibility.Visible;
             AddMileageRun.Visibility = Visibility.Visible;
+
+            NumIntText.Visibility = Visibility.Hidden;
+            NumIntTB.Visibility = Visibility.Hidden;
+            DistIntText.Visibility = Visibility.Hidden;
+            DistIntTB.Visibility = Visibility.Hidden;
+            PaceIntText.Visibility = Visibility.Hidden;
+            PaceIntMinTB.Visibility = Visibility.Hidden;
+            PaceIntSecTB.Visibility = Visibility.Hidden;
+            JogCB.Visibility = Visibility.Hidden;
+            JogDistTB.Visibility = Visibility.Hidden;
+            DistJogText.Visibility = Visibility.Hidden;
+            PaceJogText.Visibility = Visibility.Hidden;
+            TimeJogText.Visibility = Visibility.Hidden;
+            JogPaceMinTB.Visibility = Visibility.Hidden;
+            JogPaceSecTB.Visibility = Visibility.Hidden;
+            JogTimeHourTB.Visibility = Visibility.Hidden;
+            JogTimeMinTB.Visibility = Visibility.Hidden;
+            JogTimeSecTB.Visibility = Visibility.Hidden;
+            AddWorkout.Visibility = Visibility.Hidden;
+        }
+
+        private void JogCB_Checked(object sender, RoutedEventArgs e)
+        {
+            JogDistTB.Visibility = Visibility.Visible;
+            DistJogText.Visibility = Visibility.Visible;
+            PaceJogText.Visibility = Visibility.Visible;
+            TimeJogText.Visibility = Visibility.Visible;
+            JogPaceMinTB.Visibility = Visibility.Visible;
+            JogPaceSecTB.Visibility = Visibility.Visible;
+            JogTimeHourTB.Visibility = Visibility.Visible;
+            JogTimeMinTB.Visibility = Visibility.Visible;
+            JogTimeSecTB.Visibility = Visibility.Visible;
+        }
+
+        private void JogCB_Unchecked(object sender, RoutedEventArgs e)
+        {
+            JogDistTB.Visibility = Visibility.Hidden;
+            DistJogText.Visibility = Visibility.Hidden;
+            PaceJogText.Visibility = Visibility.Hidden;
+            TimeJogText.Visibility = Visibility.Hidden;
+            JogPaceMinTB.Visibility = Visibility.Hidden;
+            JogPaceSecTB.Visibility = Visibility.Hidden;
+            JogTimeHourTB.Visibility = Visibility.Hidden;
+            JogTimeMinTB.Visibility = Visibility.Hidden;
+            JogTimeSecTB.Visibility = Visibility.Hidden;
         }
     }
 }

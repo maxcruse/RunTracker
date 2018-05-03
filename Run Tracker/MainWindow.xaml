@@ -44,14 +44,14 @@
 			<ColumnDefinition Width="195*"/>
 		</Grid.ColumnDefinitions>
 		<Label Content="Run Tracker" HorizontalAlignment="Left" Margin="282,10,0,0" VerticalAlignment="Top"/>
-		<Label Content="New Run" HorizontalAlignment="Left" Margin="76,42,0,0" VerticalAlignment="Top"/>
+		<Label Content="New Run" HorizontalAlignment="Left" Margin="84,39,0,0" VerticalAlignment="Top"/>
 		<Label x:Name="DistanceText" Content="Distance:" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
 		<Label x:Name="TimeText" Content="Time:" HorizontalAlignment="Left" Margin="30,196,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.022,-0.213" Visibility="Hidden"/>
 		<Label x:Name="PaceText" Content="Pace:" HorizontalAlignment="Left" Margin="31,253,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
 		<TextBox x:Name="DistanceTB" HorizontalAlignment="Left" Height="23" Margin="73,147,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
 		<TextBox x:Name="HourTB" HorizontalAlignment="Left" Height="23" Margin="73,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30" Visibility="Hidden" />
 		<TextBox x:Name="PaceTB" HorizontalAlignment="Left" Height="23" Margin="73,256,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
-		<DatePicker x:Name="Date" HorizontalAlignment="Left" Margin="73,306,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+		<DatePicker x:Name="Date" HorizontalAlignment="Left" Margin="73,330,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
 		<Button x:Name="AddMileageRun" Content="Add Run" HorizontalAlignment="Left" Margin="73,361,0,0" VerticalAlignment="Top" Width="75" Click="AddMileageRun_Click" Visibility="Hidden"/>
 		<TextBox x:Name="MinTB" HorizontalAlignment="Left" Height="23" Margin="114,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="29" Visibility="Hidden"/>
 		<TextBox x:Name="SecTB" HorizontalAlignment="Left" Height="23" Margin="157,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
@@ -70,5 +70,22 @@
 		<RadioButton x:Name="MileageRB" Content="Mileage" GroupName="RunType" HorizontalAlignment="Left" Margin="31,88,0,0" VerticalAlignment="Top" Checked="MileageRB_Checked"/>
 		<Button x:Name="AddWorkout" Content="Add Run" HorizontalAlignment="Left" Margin="73,361,0,0" VerticalAlignment="Top" Width="75" Click="AddWorkout_Click" Visibility="Hidden"/>
 		<TextBox x:Name="PaceMinTB" HorizontalAlignment="Left" Height="23" Margin="125,256,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30" RenderTransformOrigin="2.233,0.609" Visibility="Hidden"/>
+		<Label x:Name="NumIntText" Content="Number of Intervals:" HorizontalAlignment="Left" Margin="31,121,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+		<Label x:Name="PaceIntText" Content="Pace of Intervals:" HorizontalAlignment="Left" Margin="31,152,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+		<Label x:Name="DistIntText" Content="Distance of Intervals:" HorizontalAlignment="Left" Margin="31,183,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+		<CheckBox x:Name="JogCB" Content="Jogging Recovery" HorizontalAlignment="Left" Margin="31,214,0,0" VerticalAlignment="Top" Checked="JogCB_Checked" Unchecked="JogCB_Unchecked" Visibility="Hidden"/>
+		<Label x:Name="DistJogText" Content="Distance:" HorizontalAlignment="Left" Margin="53,235,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+		<Label x:Name="TimeJogText" Content="Time:" HorizontalAlignment="Left" Margin="53,266,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+		<Label x:Name="PaceJogText" Content="Pace:" HorizontalAlignment="Left" Margin="53,297,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+		<TextBox x:Name="NumIntTB" HorizontalAlignment="Left" Height="23" Margin="157,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
+		<TextBox x:Name="PaceIntMinTB" HorizontalAlignment="Left" Height="23" Margin="157,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+		<TextBox x:Name="PaceIntSecTB" HorizontalAlignment="Left" Height="23" Margin="199,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+		<TextBox x:Name="DistIntTB" HorizontalAlignment="Left" Height="23" Margin="157,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
+		<TextBox x:Name="JogDistTB" HorizontalAlignment="Left" Height="23" Margin="111,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
+		<TextBox x:Name="JogTimeHourTB" HorizontalAlignment="Left" Height="23" Margin="112,269,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+		<TextBox x:Name="JogTimeMinTB" HorizontalAlignment="Left" Height="23" Margin="156,269,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+		<TextBox x:Name="JogTimeSecTB" HorizontalAlignment="Left" Height="23" Margin="200,269,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+		<TextBox x:Name="JogPaceMinTB" HorizontalAlignment="Left" Height="23" Margin="112,301,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+		<TextBox x:Name="JogPaceSecTB" HorizontalAlignment="Left" Height="23" Margin="156,301,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
 	</Grid>
 </Window>
