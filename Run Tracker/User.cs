@@ -8,6 +8,23 @@ namespace Run_Tracker
 {
     class User
     {
+        //Fields
+        private string _username;
+
+        //Getters and Setters
+        public string Username
+        {
+            get
+            {
+                return _username;
+            }
+            set
+            {
+                this._username = value;
+            }
+        }
+
+        //Constructors
         public User()
         {
 
@@ -16,13 +33,6 @@ namespace Run_Tracker
         public User(string name)
         {
             this.Username = name;
-        }
-
-        public string Username { get; set; }
-        public string Name { get; set; }
-
-        public int Age { get; set; }
-
-        public string Mail { get; set; }
+        }               
     }
 }

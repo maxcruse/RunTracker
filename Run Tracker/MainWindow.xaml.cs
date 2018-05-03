@@ -28,6 +28,7 @@ namespace Run_Tracker
         SqlDataAdapter da = new SqlDataAdapter();
 
         DataTable ds = new DataTable("Runs");
+        DataTable ds2 = new DataTable("Runs");
 
         User newUser = new User();
 
@@ -66,16 +67,24 @@ namespace Run_Tracker
         {
             Workout workout = new Workout()
             {
-
-                Distance = Convert.ToInt32(NumIntTB.Text) * Convert.ToInt32(DistIntTB.Text),
-                Pace = new TimeSpan(0, Convert.ToInt32(PaceIntMinTB.Text), Convert.ToInt32(PaceIntSecTB.Text)),
+                NumOfIntervals = Convert.ToInt32(NumIntTB.Text),
+                PaceOfIntervals = new TimeSpan(0, Convert.ToInt32(PaceIntMinTB.Text), Convert.ToInt32(PaceIntSecTB.Text)),
+                DistOfIntervals = Convert.ToInt32(DistIntTB.Text),
                 Time = TimeSpan.FromTicks(new TimeSpan(0, Convert.ToInt32(PaceIntMinTB.Text), Convert.ToInt32(PaceIntSecTB.Text)).Ticks * Convert.ToInt32(NumIntTB.Text) * Convert.ToInt32(DistIntTB.Text)),
                 Date = Date.Text,
                 Type = "Workout"
             };
             if (JogCB.IsChecked.Value)
             {
-                workout.CalculateRecovery(Convert.ToInt32(NumIntTB.Text), Convert.ToInt32(JogDistTB.Text), new TimeSpan(0, Convert.ToInt32(JogPaceMinTB.Text), Convert.ToInt32(JogPaceSecTB.Text)), new TimeSpan(0, Convert.ToInt32(JogTimeMinTB.Text), Convert.ToInt32(JogTimeSecTB.Text)));
+                workout.JogDist = Convert.ToInt32(JogDistTB.Text);
+                workout.JogPace = new TimeSpan(0, Convert.ToInt32(JogPaceMinTB.Text), Convert.ToInt32(JogPaceSecTB.Text));
+                workout.JogTime = new TimeSpan(Convert.ToInt32(JogTimeHourTB.Text), Convert.ToInt32(JogTimeMinTB.Text), Convert.ToInt32(JogTimeSecTB.Text));
+
+                workout.CalculateWithRecovery();
+            }
+            else
+            {
+                workout.CalculateNoRecovery();
             }
             items.Add(workout);
 
@@ -190,6 +199,18 @@ namespace Run_Tracker
             dg.ItemsSource = ds.DefaultView;
         }
 
+        private void UpdateWeek()
+        {
+            ds.Clear();
+            da.SelectCommand = new SqlCommand("SELECT * FROM Runs WHERE Runner = @Runner AND dateofrun >= DATEADD(day, -7, GETDATE())", cs);
+            da.SelectCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
+            cs.Open();
+            da.SelectCommand.ExecuteNonQuery();
+            cs.Close();
+            da.Fill(ds);
+            dg.ItemsSource = ds.DefaultView;
+        }
+
         private void ViewRuns_Click(object sender, RoutedEventArgs e)
         {
             UpdateRuns();
@@ -198,6 +219,7 @@ namespace Run_Tracker
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             newUser.Username = UsernameTB.Text;
+            ds.Clear();
             da.InsertCommand = new SqlCommand("IF NOT EXISTS (SELECT * FROM Users WHERE username = @user) INSERT INTO Users VALUES (@username)", cs);
             da.InsertCommand.Parameters.Add("@user", SqlDbType.VarChar).Value = newUser.Username;
             da.InsertCommand.Parameters.Add("@username", SqlDbType.VarChar).Value = newUser.Username;
@@ -205,13 +227,7 @@ namespace Run_Tracker
             da.InsertCommand.ExecuteNonQuery();
             cs.Close();
 
-            da.SelectCommand = new SqlCommand("SELECT * FROM Runs WHERE Runner = 'max' AND dateofrun >= DATEADD(day, -7, GETDATE())", cs);
-            da.SelectCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
-            cs.Open();
-            da.SelectCommand.ExecuteNonQuery();
-            cs.Close();
-            da.Fill(ds);
-            dg.ItemsSource = ds.DefaultView;
+            UpdateWeek();
 
             UsernameText.Visibility = Visibility.Hidden;
             UsernameTB.Visibility = Visibility.Hidden;
@@ -219,18 +235,79 @@ namespace Run_Tracker
             MileageRB.Visibility = Visibility.Visible;
             WorkoutRB.Visibility = Visibility.Visible;
             NewTitle.Visibility = Visibility.Visible;
+            Total.Visibility = Visibility.Visible;
+            TotalWeek.Visibility = Visibility.Visible;
+            ThisWeek.Visibility = Visibility.Visible;
+            ViewRuns.Visibility = Visibility.Visible;
+            SwitchUser.Visibility = Visibility.Visible;
         }
 
         private void ThisWeek_Click(object sender, RoutedEventArgs e)
         {
+            UpdateWeek();
+        }
+
+        private void SwitchUser_Click(object sender, RoutedEventArgs e)
+        {
             ds.Clear();
-            da.SelectCommand = new SqlCommand("SELECT * FROM Runs WHERE Runner = 'max' AND dateofrun >= DATEADD(day, -7, GETDATE())", cs);
+            UsernameText.Visibility = Visibility.Visible;
+            UsernameTB.Visibility = Visibility.Visible;
+            Login.Visibility = Visibility.Visible;
+            DistanceTB.Visibility = Visibility.Hidden;
+            DistanceText.Visibility = Visibility.Hidden;
+            TimeText.Visibility = Visibility.Hidden;
+            HourTB.Visibility = Visibility.Hidden;
+            MinTB.Visibility = Visibility.Hidden;
+            SecTB.Visibility = Visibility.Hidden;
+            PaceText.Visibility = Visibility.Hidden;
+            PaceTB.Visibility = Visibility.Hidden;
+            PaceMinTB.Visibility = Visibility.Hidden;
+            AddMileageRun.Visibility = Visibility.Hidden;
+            NumIntText.Visibility = Visibility.Hidden;
+            NumIntTB.Visibility = Visibility.Hidden;
+            DistIntText.Visibility = Visibility.Hidden;
+            DistIntTB.Visibility = Visibility.Hidden;
+            PaceIntText.Visibility = Visibility.Hidden;
+            PaceIntMinTB.Visibility = Visibility.Hidden;
+            PaceIntSecTB.Visibility = Visibility.Hidden;
+            JogCB.Visibility = Visibility.Hidden;
+            JogDistTB.Visibility = Visibility.Hidden;
+            DistJogText.Visibility = Visibility.Hidden;
+            PaceJogText.Visibility = Visibility.Hidden;
+            TimeJogText.Visibility = Visibility.Hidden;
+            JogPaceMinTB.Visibility = Visibility.Hidden;
+            JogPaceSecTB.Visibility = Visibility.Hidden;
+            JogTimeHourTB.Visibility = Visibility.Hidden;
+            JogTimeMinTB.Visibility = Visibility.Hidden;
+            JogTimeSecTB.Visibility = Visibility.Hidden;
+            AddWorkout.Visibility = Visibility.Hidden;
+            MileageRB.Visibility = Visibility.Hidden;
+            WorkoutRB.Visibility = Visibility.Hidden;
+            NewTitle.Visibility = Visibility.Hidden;
+        }
+
+        private void Total_Click(object sender, RoutedEventArgs e)
+        {
+            ds2.Clear();
+            da.SelectCommand = new SqlCommand("SELECT SUM(distance) AS Total FROM Runs WHERE Runner = @Runner", cs);
             da.SelectCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
             cs.Open();
             da.SelectCommand.ExecuteNonQuery();
             cs.Close();
-            da.Fill(ds);
-            dg.ItemsSource = ds.DefaultView;
+            da.Fill(ds2);
+            dg.ItemsSource = ds2.DefaultView;
+        }
+
+        private void TotalWeek_Click(object sender, RoutedEventArgs e)
+        {
+            ds2.Clear();
+            da.SelectCommand = new SqlCommand("SELECT SUM(distance) AS Total FROM Runs WHERE Runner = @Runner AND dateofrun >= DATEADD(day, -7, GETDATE())", cs);
+            da.SelectCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
+            cs.Open();
+            da.SelectCommand.ExecuteNonQuery();
+            cs.Close();
+            da.Fill(ds2);
+            dg.ItemsSource = ds2.DefaultView;
         }
     }
 }
