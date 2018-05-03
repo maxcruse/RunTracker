@@ -37,14 +37,14 @@
 <Window x:Class="Run_Tracker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Run Tracker" Height="473.314" Width="997.096">
+        Title="Run Tracker" Height="485.314" Width="997.096">
 	<Grid Margin="0,0,-64,-1">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="197*"/>
 			<ColumnDefinition Width="195*"/>
 		</Grid.ColumnDefinitions>
 		<Label Content="Run Tracker" HorizontalAlignment="Left" Margin="282,10,0,0" VerticalAlignment="Top"/>
-		<Label Content="New Run" HorizontalAlignment="Left" Margin="84,39,0,0" VerticalAlignment="Top"/>
+		<Label x:Name="NewTitle" Content="New Run" HorizontalAlignment="Left" Margin="84,39,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
 		<Label x:Name="DistanceText" Content="Distance:" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
 		<Label x:Name="TimeText" Content="Time:" HorizontalAlignment="Left" Margin="30,196,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.022,-0.213" Visibility="Hidden"/>
 		<Label x:Name="PaceText" Content="Pace:" HorizontalAlignment="Left" Margin="31,253,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
@@ -55,19 +55,19 @@
 		<Button x:Name="AddMileageRun" Content="Add Run" HorizontalAlignment="Left" Margin="73,361,0,0" VerticalAlignment="Top" Width="75" Click="AddMileageRun_Click" Visibility="Hidden"/>
 		<TextBox x:Name="MinTB" HorizontalAlignment="Left" Height="23" Margin="114,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="29" Visibility="Hidden"/>
 		<TextBox x:Name="SecTB" HorizontalAlignment="Left" Height="23" Margin="157,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
-		<ListView Name="RunLog" Margin="460,72,70,31" Grid.ColumnSpan="2">
+		<!--<ListView ItemsSource="{Binding Path=Runs}"  Name="RunLog" Margin="460,72,70,31" Grid.ColumnSpan="2">
 			<ListView.View>
 				<GridView>
-					<GridViewColumn Header="Distance" Width="100" DisplayMemberBinding="{Binding Distance}" />
-					<GridViewColumn Header="Time" Width="100" DisplayMemberBinding="{Binding Time}" />
-					<GridViewColumn Header="Pace" Width="100" DisplayMemberBinding="{Binding Pace}" />
-					<GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding Date}" />
-					<GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Type}" />
+					<GridViewColumn Header="Distance" Width="100" DisplayMemberBinding="{Binding Path=distance}" />
+					<GridViewColumn Header="Time" Width="100" DisplayMemberBinding="{Binding Path=totaltime}" />
+					<GridViewColumn Header="Pace" Width="100" DisplayMemberBinding="{Binding Path=pace}" />
+					<GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding Path=dateofrun}" />
+					<GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Path=typeofrun}" />
 				</GridView>
 			</ListView.View>
-		</ListView>
-		<RadioButton x:Name="WorkoutRB" Content="Workout" GroupName="RunType" HorizontalAlignment="Left" Margin="128,88,0,0" VerticalAlignment="Top" Checked="WorkoutRB_Checked"/>
-		<RadioButton x:Name="MileageRB" Content="Mileage" GroupName="RunType" HorizontalAlignment="Left" Margin="31,88,0,0" VerticalAlignment="Top" Checked="MileageRB_Checked"/>
+		</ListView> -->
+		<RadioButton x:Name="WorkoutRB" Content="Workout" GroupName="RunType" HorizontalAlignment="Left" Margin="128,88,0,0" VerticalAlignment="Top" Checked="WorkoutRB_Checked" Visibility="Hidden"/>
+		<RadioButton x:Name="MileageRB" Content="Mileage" GroupName="RunType" HorizontalAlignment="Left" Margin="31,88,0,0" VerticalAlignment="Top" Checked="MileageRB_Checked" Visibility="Hidden"/>
 		<Button x:Name="AddWorkout" Content="Add Run" HorizontalAlignment="Left" Margin="73,361,0,0" VerticalAlignment="Top" Width="75" Click="AddWorkout_Click" Visibility="Hidden"/>
 		<TextBox x:Name="PaceMinTB" HorizontalAlignment="Left" Height="23" Margin="125,256,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30" RenderTransformOrigin="2.233,0.609" Visibility="Hidden"/>
 		<Label x:Name="NumIntText" Content="Number of Intervals:" HorizontalAlignment="Left" Margin="31,121,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
@@ -87,5 +87,12 @@
 		<TextBox x:Name="JogTimeSecTB" HorizontalAlignment="Left" Height="23" Margin="200,269,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
 		<TextBox x:Name="JogPaceMinTB" HorizontalAlignment="Left" Height="23" Margin="112,301,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
 		<TextBox x:Name="JogPaceSecTB" HorizontalAlignment="Left" Height="23" Margin="156,301,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+		<Label Content="Run Log" Grid.Column="1" HorizontalAlignment="Left" Margin="139,36,0,0" VerticalAlignment="Top"/>
+		<Button x:Name="ViewRuns" Content="View All Runs" Grid.Column="1" HorizontalAlignment="Left" Margin="335,47,0,0" VerticalAlignment="Top" Width="76" Click="ViewRuns_Click"/>
+		<DataGrid x:Name="dg" Grid.Column="1" HorizontalAlignment="Left" Height="319" Margin="12,88,0,0" VerticalAlignment="Top" Width="399"/>
+		<TextBox x:Name="UsernameTB" HorizontalAlignment="Left" Height="23" Margin="148,229,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+		<Label x:Name="UsernameText" Content="Username:" HorizontalAlignment="Left" Margin="73,226,0,0" VerticalAlignment="Top"/>
+		<Button x:Name="Login" Content="Login" HorizontalAlignment="Left" Margin="114,264,0,0" VerticalAlignment="Top" Width="75" Click="Login_Click"/>
+		<Button x:Name="ThisWeek" Content="This Week" Grid.Column="1" HorizontalAlignment="Left" Margin="239,47,0,0" VerticalAlignment="Top" Width="76" Click="ThisWeek_Click"/>
 	</Grid>
 </Window>

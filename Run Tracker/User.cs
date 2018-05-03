@@ -8,6 +8,17 @@ namespace Run_Tracker
 {
     class User
     {
+        public User()
+        {
+
+        }
+
+        public User(string name)
+        {
+            this.Username = name;
+        }
+
+        public string Username { get; set; }
         public string Name { get; set; }
 
         public int Age { get; set; }

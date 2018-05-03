@@ -8,5 +8,9 @@ namespace Run_Tracker
 {
     public class MileageRun : Run
     {
+        public MileageRun()
+        {
+
+        }
     }
 }

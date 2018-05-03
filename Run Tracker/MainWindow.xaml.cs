@@ -27,123 +27,69 @@ namespace Run_Tracker
         SqlConnection cs = new SqlConnection("Server=R6507002;Database=RunTracker;Trusted_Connection=True;");
         SqlDataAdapter da = new SqlDataAdapter();
 
+        DataTable ds = new DataTable("Runs");
+
+        User newUser = new User();
+
         public MainWindow()
         {
             InitializeComponent();
         }
-        /*
-        public class User
+ 
+        public void AddMileageRun_Click(object sender, RoutedEventArgs e)
         {
-            public string Name { get; set; }
-
-            public int Age { get; set; }
-
-            public string Mail { get; set; }
-        }
-        
-        public class Run
-        {
-            public int Distance { get; set; }
-            public TimeSpan Pace { get; set; }
-            public double Hour { get; set; }
-            public double Minute { get; set; }
-            public double Second { get; set; }
-            public string Date { get; set; }
-            public TimeSpan Time { get; set; }
-
-
-            public string Type { get; set; }
-            double distance;
-            double hour, minute, second;
-            double pace;
-        }
-        
-        public class MileageRun : Run
-        {
-
-        }
-
-        public class Workout : Run
-        {
-
-        }
-        */
-        private void AddMileageRun_Click(object sender, RoutedEventArgs e)
-        {
-            var mileage = new MileageRun
+            MileageRun mileage = new MileageRun()
             {
                 Distance = Convert.ToInt32(DistanceTB.Text),
                 Pace = new TimeSpan(0, Convert.ToInt32(PaceTB.Text), Convert.ToInt32(PaceMinTB.Text)),
                 Time = new TimeSpan(Convert.ToInt32(HourTB.Text), Convert.ToInt32(MinTB.Text), Convert.ToInt32(SecTB.Text)),
-                Hour = Convert.ToDouble(HourTB.Text),
-                Minute = Convert.ToDouble(MinTB.Text),
-                Second = Convert.ToDouble(SecTB.Text),
                 Date = Date.Text,
                 Type = "Mileage"
             };
+            items.Add(mileage);
 
-            RunLog.Items.Add(mileage);
-
-            //RunLog.ItemsSource = items;
-
-            //TimeSpan time = new TimeSpan(Convert.ToInt32(HourTB.Text), Convert.ToInt32(MinTB.Text), Convert.ToInt32(SecTB.Text));
-            //TimeSpan pacetime = new TimeSpan(0, Convert.ToInt32(PaceTB.Text), Convert.ToInt32(PaceMinTB.Text));
-
-            //SqlConnection cs = new SqlConnection("Data Source=R6507002\LOCALDB#E4BD5D78; Initial Catalog=RunTracker; Integrated Security=TRUE");
-            
-            //da.InsertCommand = new SqlCommand("INSERT INTO practice VALUES(@distance)", cs);
-            //da.InsertCommand.Parameters.Add("@distance", SqlDbType.VarChar).Value = DistanceTB.Text;
-            //da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES ('" + DistanceTB.Text + "','" + mileage.Time + "','" + PaceTB.Text + "','" + Date.Text + "' )", cs);
-            /*da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES (@distance, @totaltime, @pace, @dateofrun, @typeofrun)", cs);
-            da.InsertCommand.Parameters.Add("@distance", SqlDbType.Int).Value = Convert.ToInt32(DistanceTB.Text);
-            da.InsertCommand.Parameters.Add("@totaltime", SqlDbType.Time).Value = new TimeSpan(Convert.ToInt32(HourTB.Text), Convert.ToInt32(MinTB.Text), Convert.ToInt32(SecTB.Text));
-            da.InsertCommand.Parameters.Add("@pace", SqlDbType.Time).Value = new TimeSpan(0, Convert.ToInt32(PaceTB.Text), Convert.ToInt32(PaceMinTB.Text));
-            da.InsertCommand.Parameters.Add("@dateofrun", SqlDbType.Date).Value = Date.Text;
-            da.InsertCommand.Parameters.Add("@typeofrun", SqlDbType.VarChar).Value = "Mileage";*/
-            da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES (@distance, @totaltime, @pace, @dateofrun, @typeofrun)", cs);
+            da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES (@distance, @totaltime, @pace, @dateofrun, @typeofrun, @Runner)", cs);
             da.InsertCommand.Parameters.Add("@distance", SqlDbType.Int).Value = mileage.Distance;
             da.InsertCommand.Parameters.Add("@totaltime", SqlDbType.Time).Value = mileage.Time;
             da.InsertCommand.Parameters.Add("@pace", SqlDbType.Time).Value = mileage.Pace;
             da.InsertCommand.Parameters.Add("@dateofrun", SqlDbType.Date).Value = mileage.Date;
             da.InsertCommand.Parameters.Add("@typeofrun", SqlDbType.VarChar).Value = mileage.Type;
+            da.InsertCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
             cs.Open();
             da.InsertCommand.ExecuteNonQuery();
             cs.Close();
-
+            UpdateRuns();
             MessageBox.Show("New Run added!");
         }
 
         private void AddWorkout_Click(object sender, RoutedEventArgs e)
         {
-            items.Add(new MileageRun()
+            Workout workout = new Workout()
             {
-                Distance = Convert.ToInt32(DistanceTB.Text),
-                Pace = new TimeSpan(0, Convert.ToInt32(PaceTB.Text), Convert.ToInt32(PaceMinTB.Text)),
-                Time = new TimeSpan(Convert.ToInt32(HourTB.Text), Convert.ToInt32(MinTB.Text), Convert.ToInt32(SecTB.Text)),
-                Hour = Convert.ToDouble(HourTB.Text),
-                Minute = Convert.ToDouble(MinTB.Text),
-                Second = Convert.ToDouble(SecTB.Text),
+
+                Distance = Convert.ToInt32(NumIntTB.Text) * Convert.ToInt32(DistIntTB.Text),
+                Pace = new TimeSpan(0, Convert.ToInt32(PaceIntMinTB.Text), Convert.ToInt32(PaceIntSecTB.Text)),
+                Time = TimeSpan.FromTicks(new TimeSpan(0, Convert.ToInt32(PaceIntMinTB.Text), Convert.ToInt32(PaceIntSecTB.Text)).Ticks * Convert.ToInt32(NumIntTB.Text) * Convert.ToInt32(DistIntTB.Text)),
                 Date = Date.Text,
-                Type = "Mileage"
-            });
-            RunLog.ItemsSource = items;
+                Type = "Workout"
+            };
+            if (JogCB.IsChecked.Value)
+            {
+                workout.CalculateRecovery(Convert.ToInt32(NumIntTB.Text), Convert.ToInt32(JogDistTB.Text), new TimeSpan(0, Convert.ToInt32(JogPaceMinTB.Text), Convert.ToInt32(JogPaceSecTB.Text)), new TimeSpan(0, Convert.ToInt32(JogTimeMinTB.Text), Convert.ToInt32(JogTimeSecTB.Text)));
+            }
+            items.Add(workout);
 
-            TimeSpan time = new TimeSpan(Convert.ToInt32(HourTB.Text), Convert.ToInt32(MinTB.Text), Convert.ToInt32(SecTB.Text));
-            TimeSpan pacetime = new TimeSpan(0, Convert.ToInt32(PaceTB.Text), Convert.ToInt32(PaceMinTB.Text));
-
-            SqlConnection cs = new SqlConnection("Data Source=R6507002; Initial Catalog=RunTracker; Integrated Security=TRUE");
-            SqlDataAdapter da = new SqlDataAdapter();
-            //da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES ('" + DistanceTB.Text + "','" + time + "','" + PaceTB.Text + "','" + Date.Text + "' )", cs);
-            da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES (@distance, @totaltime, @pace, @dateofrun)", cs);
-            da.InsertCommand.Parameters.Add("@distance", SqlDbType.Int).Value = Convert.ToInt32(DistanceTB.Text);
-            da.InsertCommand.Parameters.Add("@totaltime", SqlDbType.Time).Value = time;
-            da.InsertCommand.Parameters.Add("@pace", SqlDbType.Time).Value = new TimeSpan(0, Convert.ToInt32(PaceTB.Text), Convert.ToInt32(PaceMinTB.Text));
-            da.InsertCommand.Parameters.Add("@dateofrun", SqlDbType.Date).Value = Date.Text;
-
+            da.InsertCommand = new SqlCommand("INSERT INTO Runs VALUES (@distance, @totaltime, @pace, @dateofrun, @typeofrun, @Runner)", cs);
+            da.InsertCommand.Parameters.Add("@distance", SqlDbType.Int).Value = workout.Distance;
+            da.InsertCommand.Parameters.Add("@totaltime", SqlDbType.Time).Value = workout.Time;
+            da.InsertCommand.Parameters.Add("@pace", SqlDbType.Time).Value = workout.Pace;
+            da.InsertCommand.Parameters.Add("@dateofrun", SqlDbType.Date).Value = workout.Date;
+            da.InsertCommand.Parameters.Add("@typeofrun", SqlDbType.VarChar).Value = workout.Type;
+            da.InsertCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
             cs.Open();
             da.InsertCommand.ExecuteNonQuery();
             cs.Close();
-
+            UpdateRuns();
             MessageBox.Show("New Run added!");
         }
 
@@ -230,6 +176,61 @@ namespace Run_Tracker
             JogTimeHourTB.Visibility = Visibility.Hidden;
             JogTimeMinTB.Visibility = Visibility.Hidden;
             JogTimeSecTB.Visibility = Visibility.Hidden;
+        }
+
+        private void UpdateRuns()
+        {
+            da.SelectCommand = new SqlCommand("SELECT * FROM Runs WHERE Runner = @Runner", cs);
+            da.SelectCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
+            cs.Open();
+            da.SelectCommand.ExecuteNonQuery();
+            cs.Close();
+            ds.Clear();
+            da.Fill(ds);
+            dg.ItemsSource = ds.DefaultView;
+        }
+
+        private void ViewRuns_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateRuns();
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            newUser.Username = UsernameTB.Text;
+            da.InsertCommand = new SqlCommand("IF NOT EXISTS (SELECT * FROM Users WHERE username = @user) INSERT INTO Users VALUES (@username)", cs);
+            da.InsertCommand.Parameters.Add("@user", SqlDbType.VarChar).Value = newUser.Username;
+            da.InsertCommand.Parameters.Add("@username", SqlDbType.VarChar).Value = newUser.Username;
+            cs.Open();
+            da.InsertCommand.ExecuteNonQuery();
+            cs.Close();
+
+            da.SelectCommand = new SqlCommand("SELECT * FROM Runs WHERE Runner = 'max' AND dateofrun >= DATEADD(day, -7, GETDATE())", cs);
+            da.SelectCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
+            cs.Open();
+            da.SelectCommand.ExecuteNonQuery();
+            cs.Close();
+            da.Fill(ds);
+            dg.ItemsSource = ds.DefaultView;
+
+            UsernameText.Visibility = Visibility.Hidden;
+            UsernameTB.Visibility = Visibility.Hidden;
+            Login.Visibility = Visibility.Hidden;
+            MileageRB.Visibility = Visibility.Visible;
+            WorkoutRB.Visibility = Visibility.Visible;
+            NewTitle.Visibility = Visibility.Visible;
+        }
+
+        private void ThisWeek_Click(object sender, RoutedEventArgs e)
+        {
+            ds.Clear();
+            da.SelectCommand = new SqlCommand("SELECT * FROM Runs WHERE Runner = 'max' AND dateofrun >= DATEADD(day, -7, GETDATE())", cs);
+            da.SelectCommand.Parameters.Add("@Runner", SqlDbType.VarChar).Value = newUser.Username;
+            cs.Open();
+            da.SelectCommand.ExecuteNonQuery();
+            cs.Close();
+            da.Fill(ds);
+            dg.ItemsSource = ds.DefaultView;
         }
     }
 }
